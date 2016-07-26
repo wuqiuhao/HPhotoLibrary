@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16A254g" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <scenes>
+        <!--Show View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ShowViewController" customModule="HPhotoLibrary" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qYY-dU-CKz">
+                                <rect key="frame" x="130" y="274" width="60" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="2Zf-9M-gCI"/>
+                                    <constraint firstAttribute="width" constant="60" id="al1-0k-kts"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal" title="选择图片"/>
+                                <connections>
+                                    <action selector="selectBtnClicked" destination="BYZ-38-t0r" eventType="touchUpInside" id="EWq-mU-nLd"/>
+                                </connections>
+                            </button>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8I4-NG-2PD">
+                                <rect key="frame" x="0.0" y="64" width="320" height="180"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="8I4-NG-2PD" secondAttribute="height" multiplier="16:9" id="04m-n1-WNm"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="8I4-NG-2PD" secondAttribute="trailing" id="7Hf-IQ-SdW"/>
+                            <constraint firstItem="8I4-NG-2PD" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="MTH-4T-RqM"/>
+                            <constraint firstItem="8I4-NG-2PD" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="44" id="YdX-9q-Wcj"/>
+                            <constraint firstItem="qYY-dU-CKz" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="jjh-ig-D8O"/>
+                            <constraint firstItem="qYY-dU-CKz" firstAttribute="top" secondItem="8I4-NG-2PD" secondAttribute="bottom" constant="30" id="wJ8-7a-uBu"/>
+                        </constraints>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="scrollView" destination="8I4-NG-2PD" id="hvM-2w-vXy"/>
+                        <outlet property="selectBtn" destination="qYY-dU-CKz" id="Pjr-Bx-K8K"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="71" y="12"/>
+        </scene>
+    </scenes>
+</document>
