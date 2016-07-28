@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		EF416CBA1D45F27E002F41FC /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF416CB91D45F27E002F41FC /* TestViewController.swift */; };
+		EF9E072B1D49BFC000540A2D /* HPhotoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF9E072A1D49BFC000540A2D /* HPhotoManager.swift */; };
 		EFF2E4CD1D3F6C9A00F87BCF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF2E4CC1D3F6C9A00F87BCF /* AppDelegate.swift */; };
 		EFF2E4CF1D3F6C9A00F87BCF /* ShowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF2E4CE1D3F6C9A00F87BCF /* ShowViewController.swift */; };
 		EFF2E4D21D3F6C9A00F87BCF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EFF2E4D01D3F6C9A00F87BCF /* Main.storyboard */; };
@@ -18,6 +19,7 @@
 
 /* Begin PBXFileReference section */
 		EF416CB91D45F27E002F41FC /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		EF9E072A1D49BFC000540A2D /* HPhotoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HPhotoManager.swift; sourceTree = "<group>"; };
 		EFF2E4C91D3F6C9A00F87BCF /* HPhotoLibrary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HPhotoLibrary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFF2E4CC1D3F6C9A00F87BCF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EFF2E4CE1D3F6C9A00F87BCF /* ShowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowViewController.swift; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				EFF2E4CC1D3F6C9A00F87BCF /* AppDelegate.swift */,
+				EF9E072A1D49BFC000540A2D /* HPhotoManager.swift */,
 				EFF2E4CE1D3F6C9A00F87BCF /* ShowViewController.swift */,
 				EFF2E4DE1D3F6CFC00F87BCF /* SelectViewController.swift */,
 				EFF2E4D01D3F6C9A00F87BCF /* Main.storyboard */,
@@ -142,6 +145,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EFF2E4CF1D3F6C9A00F87BCF /* ShowViewController.swift in Sources */,
+				EF9E072B1D49BFC000540A2D /* HPhotoManager.swift in Sources */,
 				EFF2E4DF1D3F6CFC00F87BCF /* SelectViewController.swift in Sources */,
 				EF416CBA1D45F27E002F41FC /* TestViewController.swift in Sources */,
 				EFF2E4CD1D3F6C9A00F87BCF /* AppDelegate.swift in Sources */,

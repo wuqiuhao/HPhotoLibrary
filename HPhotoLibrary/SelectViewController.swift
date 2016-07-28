@@ -7,10 +7,17 @@
 //
 
 import UIKit
+import Photos
+
+private let headViewHeight: CGFloat = 180
+private let cellRowHeight: CGFloat = 60
+private let tableViewHeight: CGFloat = cellRowHeight * 3 + headViewHeight
 
 class SelectViewController: UIViewController {
     
     var delegate: HPhotoLibraryDelegate!
+    
+    var headImages = [UIImage]()
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: self.view.frame)
         tableView.tableFooterView = UIView()
@@ -32,6 +39,7 @@ class SelectViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchSomePhoto()
         self.view.addSubview(tableView)
     }
     
@@ -57,7 +65,21 @@ extension SelectViewController: UITableViewDataSource {
         }
         switch indexPath.row {
         case 0:
-            //TODO: 添加滚动视图
+            // 添加滚动视图
+            let scrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: 180))
+            scrollView.contentInset = UIEdgeInsets(top: 2.5, left: 2.5, bottom: 2.5, right: 2.5)
+            scrollView.showsHorizontalScrollIndicator = false
+            for image in headImages {
+                let imgView = UIImageView()
+                imgView.image = image
+                let imgWidth = scrollView.bounds.height * image.size.width / image.size.height
+                imgView.layer.borderWidth = 2.5
+                imgView.layer.borderColor = UIColor.whiteColor().CGColor
+                imgView.frame = CGRect(x: scrollView.contentSize.width, y: 0, width: imgWidth, height: scrollView.bounds.height - 5)
+                scrollView.contentSize = CGSize(width: scrollView.contentSize.width + imgWidth, height: scrollView.bounds.height - 5)
+                scrollView.addSubview(imgView)
+            }
+            cell.contentView.addSubview(scrollView)
             cell.selectionStyle = .None
             break
         case 1:
@@ -97,9 +119,9 @@ extension SelectViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.row == 0 {
-            return 180
+            return headViewHeight
         }
-        return 60
+        return cellRowHeight
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -163,6 +185,38 @@ extension SelectViewController {
         imagePicker.delegate = self
         self.presentViewController(imagePicker, animated: true, completion: nil)
     }
+    
+    /**
+     从相册中抓取部分图片
+     */
+    func fetchSomePhoto() {
+        // 获取相册 —— 相机胶卷
+        let fetchResult = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.SmartAlbum, subtype: PHAssetCollectionSubtype.SmartAlbumUserLibrary, options: nil).firstObject
+        
+            if fetchResult is PHAssetCollection {
+                let assetCollection = fetchResult as! PHAssetCollection
+                let fetchOptions = PHFetchOptions()
+                fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+                fetchOptions.fetchLimit = 10
+                let photoResults = PHAsset.fetchAssetsInAssetCollection(assetCollection, options: fetchOptions)
+                let options = PHImageRequestOptions()
+                options.synchronous = true
+                options.deliveryMode = PHImageRequestOptionsDeliveryMode.FastFormat
+                options.resizeMode = PHImageRequestOptionsResizeMode.Exact
+                for i in 0..<photoResults.count {
+                    let asset = photoResults[i] as! PHAsset
+                    let screenScale = UIScreen.mainScreen().scale
+                    PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: CGSize(width: headViewHeight * screenScale * CGFloat(asset.pixelWidth) / CGFloat(asset.pixelHeight) , height: headViewHeight * screenScale), contentMode: PHImageContentMode.AspectFill, options: options, resultHandler: { (result, info) in
+                        // 只要清晰图
+                        if let degradedKey = info![PHImageResultIsDegradedKey] where !degradedKey.boolValue! && info![PHImageErrorKey] == nil && info![PHImageCancelledKey] == nil {
+                            self.headImages.append(result!)
+                        }
+                    })
+                }
+            } else {
+                assert(false, "Fetch collection not PHCollection: \(fetchResult)")
+            }
+        }
 }
 
 extension SelectViewController: UIImagePickerControllerDelegate,UINavigationControllerDelegate {
@@ -241,7 +295,7 @@ class CustomPresentationController: UIPresentationController {
     }
     
     override func frameOfPresentedViewInContainerView() -> CGRect {
-        return CGRect(x: 0, y: UIScreen.mainScreen().bounds.height - 360, width: UIScreen.mainScreen().bounds.width, height: 360)
+        return CGRect(x: 0, y: UIScreen.mainScreen().bounds.height - tableViewHeight, width: UIScreen.mainScreen().bounds.width, height: tableViewHeight)
     }
     
     
@@ -275,12 +329,12 @@ class CustomPresentationAnimationController: NSObject, UIViewControllerAnimatedT
     
     func animatePresentationWithTransitionContext(transitionContext: UIViewControllerContextTransitioning) {
         let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
-        toViewController?.view.frame = CGRect(x: 0, y: UIScreen.mainScreen().bounds.height, width: UIScreen.mainScreen().bounds.width, height: 360)
+        toViewController?.view.frame = CGRect(x: 0, y: UIScreen.mainScreen().bounds.height, width: UIScreen.mainScreen().bounds.width, height: tableViewHeight)
         let containerView = transitionContext.containerView()
         containerView?.addSubview(toViewController!.view)
         
         UIView.animateWithDuration(duration, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-            toViewController?.view.frame = CGRect(x: 0, y: UIScreen.mainScreen().bounds.height - 360, width: UIScreen.mainScreen().bounds.width, height: 360)
+            toViewController?.view.frame = CGRect(x: 0, y: UIScreen.mainScreen().bounds.height - tableViewHeight, width: UIScreen.mainScreen().bounds.width, height: tableViewHeight)
         }) { (completed) in
             transitionContext.completeTransition(completed)
         }
@@ -289,7 +343,7 @@ class CustomPresentationAnimationController: NSObject, UIViewControllerAnimatedT
     func animateDismissalWithTransitionContext(transitionContext: UIViewControllerContextTransitioning) {
         let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)
         UIView.animateWithDuration(duration, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-            fromViewController!.view.frame = CGRect(x: 0, y: UIScreen.mainScreen().bounds.height, width: UIScreen.mainScreen().bounds.width, height: 360)
+            fromViewController!.view.frame = CGRect(x: 0, y: UIScreen.mainScreen().bounds.height, width: UIScreen.mainScreen().bounds.width, height: tableViewHeight)
         }) { (completed) in
             transitionContext.completeTransition(completed)
         }
